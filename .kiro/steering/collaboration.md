@@ -44,6 +44,35 @@ When Ali says "create power app component" or similar:
 - **Only use confirmed Power Apps YAML properties - no guessing**
 - **Output raw YAML only, no explanations**
 
+## Memory Bank First Coding Protocol
+
+**CRITICAL RULE**: Never assume or guess syntax, properties, or structures when coding.
+
+### Before Writing Any Code:
+1. **Search Memory Bank first** - Use grepSearch or readFile to find existing patterns
+2. **Copy exact syntax** from documented templates in `.kiro/memory-bank/`
+3. **Match property names exactly** as shown in memory bank examples
+4. **Use same control versions** (e.g., Text@0.0.51, Button@0.0.45) from templates
+
+### When Encountering Unknown Syntax:
+- **DON'T GUESS** - Stop and search memory bank
+- **DON'T ASSUME** - Find actual working examples
+- **DON'T IMPROVISE** - Use only proven patterns from templates
+
+### YAML Syntax Rules from Memory Bank:
+- Use `Weight: =FontWeight.Semibold` (not `='TextCanvas.Weight'.Semibold`)
+- Use `OnSelect: |` with formula on next line for complex actions
+- Use `Appearance: ='ButtonCanvas.Appearance'.Secondary` for buttons
+- Avoid special characters in Text properties that break YAML parsing
+
+### Process:
+1. **Read memory bank** → Find similar template
+2. **Copy structure** → Use exact same pattern  
+3. **Adapt data** → Only change data source/field names
+4. **Test syntax** → Ensure YAML parses correctly
+
+**Remember**: The memory bank contains all working patterns. Use it as the single source of truth for all coding decisions.
+
 ## GitHub Push Protocol
 
 When Ali says "push to github", execute these three commands in sequence:

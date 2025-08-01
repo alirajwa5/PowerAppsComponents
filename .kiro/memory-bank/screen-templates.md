@@ -2229,16 +2229,16 @@ Screens:
 
 ### Calendar Variables Used
 
-- **_calendarVisible**: Controls calendar visibility during loading
-- **_dateSelected**: Currently selected date
-- **_firstDayOfMonth**: First day of current month view
-- **_firstDayInView**: First date shown in calendar grid (may be previous month)
-- **_lastDayOfMonth**: Last day of current month
-- **_myCalendar**: Selected calendar from dropdown
-- **_minDate/_maxDate**: Date range markers to prevent duplicate API calls
-- **_selectedCalendarEvent**: Currently selected event in list
-- **_showLoading**: Loading state indicator
-- **_userDomain**: User's email domain for initialization
+- **\_calendarVisible**: Controls calendar visibility during loading
+- **\_dateSelected**: Currently selected date
+- **\_firstDayOfMonth**: First day of current month view
+- **\_firstDayInView**: First date shown in calendar grid (may be previous month)
+- **\_lastDayOfMonth**: Last day of current month
+- **\_myCalendar**: Selected calendar from dropdown
+- **\_minDate/\_maxDate**: Date range markers to prevent duplicate API calls
+- **\_selectedCalendarEvent**: Currently selected event in list
+- **\_showLoading**: Loading state indicator
+- **\_userDomain**: User's email domain for initialization
 
 ### Office 365 API Calls
 
@@ -2287,6 +2287,7 @@ Screens:
 - **Date Formats**: Change date display formats
 - **Loading Messages**: Customize empty state text
 - **Icons**: Replace calendar and navigation icons#
+
 # Landscape Print Template
 
 ### Overview
@@ -2386,7 +2387,7 @@ OnSelect: =Print()
 OnSelect: =Print(Screen24)
 
 // Conditional printing based on data
-OnSelect: =If(IsBlank(DataSource), 
+OnSelect: =If(IsBlank(DataSource),
     Notify("No data to print", NotificationType.Warning),
     Print()
 )
