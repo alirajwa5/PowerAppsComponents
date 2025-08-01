@@ -1847,3 +1847,555 @@ Screens:
 - **Positioning**: Adjust Y multiplier (.7) for different vertical positions
 - **Sizing**: Modify Width/Height for larger/smaller icons
 - **Spacing**: Change the 100px gap for tighter/looser layout
+
+## Calendar Template
+
+### Overview
+
+A comprehensive calendar interface with Office 365 integration featuring month navigation, event display, and calendar selection. Includes a full calendar grid view with event indicators and a detailed event list for selected dates.
+
+### Structure
+
+```yaml
+Screens:
+  CalendarScreen:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+    Children:
+      - RectMeetingBkg2:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Fill: =RGBA(240, 240, 240, 1)
+            Height: =42
+            Visible: =_calendarVisible
+            Width: =Parent.Width - Self.X
+            X: =422
+            Y: =RectQuickActionBar7.Height
+      - RectQuickActionBar7:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Height: =64
+            Width: =Parent.Width
+          Children:
+            - LblAppName6:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =RGBA(255, 255, 255, 1)
+                  Font: =Font.'Open Sans'
+                  Height: =64
+                  Size: =18
+                  Text: ="Calendar"
+                  Width: =Parent.Width - Self.X * 2
+                  X: =32
+            - LblResetToday2:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  Color: =iconCalendar2.Color
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  Height: =iconCalendar2.Height
+                  PaddingTop: =12
+                  Size: =11
+                  Text: =DateDiff(Date(Year(Today()), Month(Today()), 1), Today(), TimeUnit.Days) + 1
+                  Width: =iconCalendar2.Width
+                  X: =iconCalendar2.X
+                  Y: =iconCalendar2.Y
+            - iconCalendar2:
+                Control: Classic/Icon@2.5.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =RGBA(0, 18, 107, 1)
+                  Height: =40
+                  Icon: =Icon.CalendarBlank
+                  OnSelect: |
+                    =/*resets calendar view and date selection to today*/
+                    Set(_dateSelected, Today());
+                    Set(_firstDayOfMonth, DateAdd(Today(), 1 - Day(Today()), TimeUnit.Days));
+                    Set(_firstDayInView, DateAdd(_firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 2 + 1), TimeUnit.Days));
+                    Set(_lastDayOfMonth, DateAdd(DateAdd(_firstDayOfMonth, 1, TimeUnit.Months), -1, TimeUnit.Days))
+                  Tooltip: ="Reset selected date to today"
+                  Width: =40
+                  X: =395 - Self.Width
+                  Y: =dropdownCalendarSelection2.Y
+            - dropdownCalendarSelection2:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  ChevronBackground: =RGBA(56, 96, 178, 1)
+                  ChevronFill: =RGBA(255, 255, 255, 1)
+                  Default: =_myCalendar.DisplayName
+                  Font: =Font.'Open Sans'
+                  Items: =Office365Outlook_3.CalendarGetTables().value
+                  Items.Value: =DisplayName
+                  OnSelect: |
+                    =/*retrieves calendar events for all days in current month view and selected calendar*/
+                    Set(_calendarVisible, false);
+                    UpdateContext({_showLoading: true});
+                    Set(_myCalendar, Self.Selected);
+                    Set(_minDate, DateAdd(_firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 2 + 1), TimeUnit.Days));
+                    Set(_maxDate, DateAdd(DateAdd(_firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 2 + 1), TimeUnit.Days), 40, TimeUnit.Days));
+                    ClearCollect(MyCalendarEvents, Office365Outlook_3.GetEventsCalendarViewV2(_myCalendar.Name, Text(_minDate, DateTimeFormat.UTC), Text(_maxDate, DateTimeFormat.UTC)).value);
+                    UpdateContext({_showLoading: false});
+                    Set(_calendarVisible, true)
+                  Tooltip: ="Select a calendar"
+                  Width: =307
+                  X: =32
+                  Y: =RectQuickActionBar7.Height + 24
+      - LblMonthSelected2:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            Font: =Font.'Open Sans'
+            Height: =50
+            Size: =18
+            Text: =Text(_firstDayOfMonth, "mmmm yyyy")
+            Visible: =_calendarVisible
+            Width: =419
+            Y: =dropdownCalendarSelection2.Y + dropdownCalendarSelection2.Height + 40
+      - iconPrevMonth2:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 18, 107, 1)
+            Height: =50
+            Icon: =Icon.ChevronLeft
+            OnSelect: |
+              =/*changes month view to previous month*/
+              Set(_firstDayOfMonth, DateAdd(_firstDayOfMonth, -1, TimeUnit.Months));
+              Set(_firstDayInView, DateAdd(_firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 2 + 1), TimeUnit.Days));
+              Set(_lastDayOfMonth, DateAdd(DateAdd(_firstDayOfMonth, 1, TimeUnit.Months), -1, TimeUnit.Days));
+              /*collects calendar events for all days in current month view*/
+              If(_minDate > _firstDayOfMonth, 
+                Set(_minDate, _firstDayOfMonth); 
+                Collect(MyCalendarEvents, Office365Outlook_3.GetEventsCalendarViewV2(_myCalendar.Name, Text(_minDate, DateTimeFormat.UTC), Text(_lastDayOfMonth, DateTimeFormat.UTC)).value)
+              )
+            Tooltip: ="View previous month"
+            Visible: =_calendarVisible
+            Width: =59
+            Y: =LblMonthSelected2.Y
+      - iconNextMonth2:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 18, 107, 1)
+            Height: =50
+            Icon: =Icon.ChevronRight
+            OnSelect: |
+              =/*changes month view to next month*/
+              Set(_firstDayOfMonth, DateAdd(_firstDayOfMonth, 1, TimeUnit.Months));
+              Set(_firstDayInView, DateAdd(_firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 2 + 1), TimeUnit.Days));
+              Set(_lastDayOfMonth, DateAdd(DateAdd(_firstDayOfMonth, 1, TimeUnit.Months), -1, TimeUnit.Days));
+              /*collects calendar events for all days in current month view*/
+              If(_lastDayOfMonth > _maxDate, 
+                Set(_maxDate, _lastDayOfMonth); 
+                Collect(MyCalendarEvents, Office365Outlook_3.GetEventsCalendarViewV2(_myCalendar.Name, Text(_firstDayOfMonth, DateTimeFormat.UTC), Text(_maxDate, DateTimeFormat.UTC)).value)
+              )
+            Tooltip: ="View next month"
+            Visible: =_calendarVisible
+            Width: =59
+            X: =419 - Self.Width
+            Y: =LblMonthSelected2.Y
+      - WeekdayGallery2:
+          Control: Gallery@2.15.0
+          Variant: WeekdayGallery
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Height: =45
+            Items: =Calendar.WeekdaysShort()
+            TemplatePadding: =0
+            Visible: =_calendarVisible
+            Width: =420
+            Y: =LblMonthSelected2.Y + LblMonthSelected2.Height + 10
+          Children:
+            - Title15:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  Font: =Font.'Open Sans'
+                  Height: =WeekdayGallery2.TemplateHeight
+                  Size: =17 * WeekdayGallery2.TemplateWidth / 77
+                  Text: =ThisItem.Value
+                  Width: =WeekdayGallery2.TemplateWidth
+                  X: =WeekdayGallery2.TemplateWidth / 2 - Self.Width / 2
+                  Y: =WeekdayGallery2.TemplateHeight / 2 - Self.Height / 2
+      - MonthDayGallery2:
+          Control: Gallery@2.15.0
+          Variant: MonthDayGallery
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Height: =425
+            Items: =[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41]
+            TemplatePadding: =0
+            TemplateSize: =60
+            Visible: =_calendarVisible
+            Width: =420
+            Y: =WeekdayGallery2.Y + WeekdayGallery2.Height
+          Children:
+            - Circle3:
+                Control: Circle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(186, 202, 226, 1)
+                  Height: =Self.Width
+                  Visible: |
+                    =/*Visible if calendar events are found on this day*/
+                    CountRows(Filter(MyCalendarEvents, DateValue(Text(Start)) = DateAdd(_firstDayInView,ThisItem.Value, TimeUnit.Days))) > 0 && !Subcircle2.Visible && Title16.Visible
+                  Width: =6.5
+                  X: =MonthDayGallery2.TemplateWidth / 2 - Self.Width / 2
+                  Y: =MonthDayGallery2.TemplateHeight * (0.75)
+            - Subcircle2:
+                Control: Circle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(56, 96, 178, 1)
+                  Height: =3 * Title16.Size
+                  Visible: =And(DateAdd(_firstDayInView, ThisItem.Value) = _dateSelected, Title16.Visible)
+                  Width: =Self.Height
+                  X: =MonthDayGallery2.TemplateWidth/2 - Self.Width/2
+                  Y: =MonthDayGallery2.TemplateHeight / 2 - Self.Height / 2
+            - Title16:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  Color: |
+                    =If(DateAdd(_firstDayInView, ThisItem.Value) = _dateSelected, RGBA(255, 255, 255, 1), 
+                       DateAdd(_firstDayInView, ThisItem.Value) = Today(), RGBA(47, 41, 43, 1), 
+                       LblMonthSelected2.Color)
+                  Fill: |
+                    =/*Fill value changes if the gallery item day = today, or if it lies outside of the current month*/
+                    If(/*Date selected is today*/
+                       DateAdd(_firstDayInView, ThisItem.Value) = Today() && DateAdd(_firstDayInView, ThisItem.Value) = _dateSelected, RGBA(0,0,0,0),
+                       /*Today when it is not selected*/
+                       DateAdd(_firstDayInView, ThisItem.Value) = Today(), ColorFade(Subcircle2.Fill, 0.67), 
+                       /*The day is outside the range of the currently selected month*/
+                       Abs(Self.Text - ThisItem.Value) > 10,RGBA(200, 200, 200, 0.3), 
+                       RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  Height: =MonthDayGallery2.TemplateHeight
+                  OnSelect: =Set(_dateSelected, DateAdd(_firstDayInView, ThisItem.Value, TimeUnit.Days))
+                  Size: =17 * MonthDayGallery2.TemplateWidth / 91
+                  Text: =Day(DateAdd(_firstDayInView,ThisItem.Value, TimeUnit.Days))
+                  Visible: |
+                    =/*This item is in a row containing no days of the visible month*/
+                    !(DateAdd(_firstDayInView,ThisItem.Value, TimeUnit.Days) - Weekday(DateAdd(_firstDayInView,ThisItem.Value, TimeUnit.Days)) + 1 > _lastDayOfMonth)
+                  Width: =MonthDayGallery2.TemplateWidth
+      - LblDateSelected2:
+          Control: Label@2.5.1
+          Properties:
+            Font: =Font.'Open Sans'
+            Height: =RectMeetingBkg2.Height
+            Text: =Text(_dateSelected, DateTimeFormat.LongDate)
+            Visible: =_calendarVisible
+            Width: =Parent.Width / 3 - 60
+            X: =451
+            Y: =RectQuickActionBar7.Height
+      - CalendarEventsGallery2:
+          Control: Gallery@2.15.0
+          Variant: CalendarEventsGallery
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Height: =Parent.Height - Self.Y
+            Items: |
+              =/*Shows events only on selected date*/
+              SortByColumns(Filter(MyCalendarEvents, Text(Start, DateTimeFormat.ShortDate) = Text(_dateSelected, DateTimeFormat.ShortDate)), "Start")
+            TemplatePadding: =0
+            Visible: =_calendarVisible
+            Width: =Parent.Width - Self.X
+            X: =422
+            Y: =LblDateSelected2.Y + LblDateSelected2.Height
+          Children:
+            - Rectangle11:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  BorderThickness: =If(ThisItem.Id = _selectedCalendarEvent.Id, 2, 0)
+                  Fill: =RGBA(0,0,0,0)
+                  Height: =Parent.TemplateHeight
+                  Width: =Parent.TemplateWidth
+            - Title17:
+                Control: Label@2.5.1
+                Properties:
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =Self.Size * 1.8
+                  OnSelect: =Set(_selectedCalendarEvent, ThisItem)
+                  Size: =19 * CalendarEventsGallery2.TemplateHeight / 105
+                  Text: =ThisItem.Subject
+                  Tooltip: =ThisItem.Subject
+                  Width: =CalendarEventsGallery2.TemplateWidth - Self.X - 10
+                  X: =Body3.X + Body3.Width + 10
+                  Y: =CalendarEventsGallery2.TemplateHeight / 4 - Self.Height / 2 + 5
+            - Body3:
+                Control: Label@2.5.1
+                Properties:
+                  Font: =Font.'Open Sans'
+                  Height: =Title17.Height
+                  Size: =17 * CalendarEventsGallery2.TemplateHeight / 105
+                  Text: =Text(ThisItem.Start, DateTimeFormat.ShortTime)
+                  Width: =110
+                  X: =32
+                  Y: =Title17.Y
+            - Subtitle8:
+                Control: Label@2.5.1
+                Properties:
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Lighter
+                  Height: =Self.Size * 2
+                  Size: =18 * CalendarEventsGallery2.TemplateHeight / 105
+                  Text: =ThisItem.Location
+                  Tooltip: =ThisItem.Location
+                  Width: =CalendarEventsGallery2.TemplateWidth - Self.X - 10
+                  X: =iconLocation2.X + iconLocation2.Width + 10
+                  Y: =3 / 4 * CalendarEventsGallery2.TemplateHeight - Self.Height / 2 - 5
+            - iconLocation2:
+                Control: Classic/Icon@2.5.0
+                Properties:
+                  Color: =RGBA(0, 18, 107, 1)
+                  Height: =Subtitle8.Height
+                  Icon: =Icon.Waypoint
+                  Width: =28
+                  X: =Title17.X
+                  Y: =Subtitle8.Y
+            - Description2:
+                Control: Label@2.5.1
+                Properties:
+                  Font: =Font.'Open Sans'
+                  Height: =Subtitle8.Height
+                  Size: =17 * CalendarEventsGallery2.TemplateHeight / 105
+                  Text: =DateDiff(ThisItem.Start, ThisItem.End, TimeUnit.Minutes) & Lower(Left("Minute_Name", 1))
+                  Width: =100
+                  X: =32
+                  Y: =Subtitle8.Y
+            - Separator13:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(0, 18, 107, 1)
+                  Height: =1
+                  Width: =Parent.TemplateWidth
+                  Y: =Parent.TemplateHeight - 1
+      - iconEmptyState3:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            Color: =RGBA(0, 18, 107, 1)
+            DisplayMode: =DisplayMode.View
+            Icon: =Icon.CalendarBlank
+            Visible: =IsBlank(_userDomain)
+            X: =2* Parent.Width/3 - Self.Width / 2
+            Y: =LblNoEvents2.Y - Self.Height
+      - LblNoEvents2:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            DisplayMode: =DisplayMode.View
+            Font: =Font.'Open Sans'
+            Height: =220
+            Size: =15
+            Text: |
+              =If(IsBlank(_userDomain), "Select a calendar from the drop down to begin", 
+                 _showLoading, "Loading events...", 
+                 "No events scheduled")
+            Visible: =IsBlank(_userDomain) || _showLoading || And(CountRows(CalendarEventsGallery2.AllItems) = 0 && _calendarVisible)
+            Width: =600
+            X: =2* Parent.Width/3 - Self.Width / 2
+            Y: =CalendarEventsGallery2.Y + CalendarEventsGallery2.Height/2 - Self.Height/2
+      - RectCalendarSeparator2:
+          Control: Rectangle@2.3.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Fill: =RGBA(0, 18, 107, 1)
+            Height: =Parent.Height - Self.Y
+            Width: =2
+            X: =420
+            Y: =RectQuickActionBar7.Height
+```
+
+### Key Features
+
+- **Office 365 Integration**: Connects to Office365Outlook_3 connector
+- **Calendar Selection**: Dropdown to choose from available calendars
+- **Month Navigation**: Previous/next month with chevron icons
+- **Calendar Grid**: 7x6 grid showing full month view with surrounding dates
+- **Event Indicators**: Visual dots on dates with events
+- **Date Selection**: Click any date to view events
+- **Event List**: Detailed event display with time, location, duration
+- **Today Reset**: Quick button to return to current date
+- **Loading States**: Shows loading spinner during data fetch
+- **Empty States**: Helpful messages when no calendar selected or no events
+
+### Calendar Variables Used
+
+- **_calendarVisible**: Controls calendar visibility during loading
+- **_dateSelected**: Currently selected date
+- **_firstDayOfMonth**: First day of current month view
+- **_firstDayInView**: First date shown in calendar grid (may be previous month)
+- **_lastDayOfMonth**: Last day of current month
+- **_myCalendar**: Selected calendar from dropdown
+- **_minDate/_maxDate**: Date range markers to prevent duplicate API calls
+- **_selectedCalendarEvent**: Currently selected event in list
+- **_showLoading**: Loading state indicator
+- **_userDomain**: User's email domain for initialization
+
+### Office 365 API Calls
+
+- **CalendarGetTables()**: Retrieves available calendars
+- **GetEventsCalendarViewV2()**: Fetches events for date range
+- **MyCalendarEvents**: Collection storing fetched events
+
+### Calendar Grid Logic
+
+- **42 Items**: Gallery with items [0-41] for 6 weeks × 7 days
+- **Date Calculation**: `DateAdd(_firstDayInView, ThisItem.Value, TimeUnit.Days)`
+- **Event Indicators**: Circle3 shows when events exist on date
+- **Selection Indicator**: Subcircle2 highlights selected date
+- **Today Highlighting**: Special styling for current date
+- **Month Boundaries**: Faded styling for dates outside current month
+
+### Event Display Features
+
+- **Time Display**: Start time in short format
+- **Duration**: Calculated minutes between start/end
+- **Location**: With waypoint icon
+- **Subject**: Event title with tooltip
+- **Selection**: Border highlight for selected event
+- **Sorting**: Events sorted by start time
+
+### Use Cases
+
+- **Meeting Schedulers**: View and select meeting times
+- **Event Planning**: See availability and existing events
+- **Calendar Integration**: Embed calendar view in business apps
+- **Appointment Booking**: Show available/busy times
+- **Team Calendars**: Shared calendar viewing
+
+### Responsive Design
+
+- **Fixed Layout**: Calendar grid maintains consistent 420px width
+- **Split View**: Calendar (420px) + Events (remaining width)
+- **Vertical Separator**: 2px line dividing calendar and events
+- **Header Bar**: Full-width header with controls
+
+### Customization Options
+
+- **Colors**: Modify RGBA values for brand consistency
+- **Calendar Size**: Adjust TemplateSize and grid dimensions
+- **Event Fields**: Add/remove event properties displayed
+- **Date Formats**: Change date display formats
+- **Loading Messages**: Customize empty state text
+- **Icons**: Replace calendar and navigation icons#
+# Landscape Print Template
+
+### Overview
+
+A specialized print layout template designed for landscape orientation printing. Features fixed dimensions optimized for landscape paper size (1123x794) with a print button that hides during the actual printing process.
+
+### Structure
+
+```yaml
+Screens:
+  LandscapePrintScreen:
+    Properties:
+      Height: =794
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+      Width: =1123
+    Children:
+      - PrintContainer2:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Height: =68
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutJustifyContent: =LayoutJustifyContent.End
+            PaddingRight: =20
+            Width: =1123
+          Children:
+            - PrintButton2:
+                Control: Button@0.0.45
+                Properties:
+                  Appearance: ='ButtonCanvas.Appearance'.Secondary
+                  OnSelect: =Print()
+                  Text: ="Print"
+                  Visible: =Not(Screen24.Printing)
+                  X: =72
+                  Y: =272
+```
+
+### Key Features
+
+- **Fixed Landscape Dimensions**: 1123x794 pixels (standard landscape paper ratio)
+- **Print Functionality**: Built-in Print() function on button click
+- **Smart Button Visibility**: Print button hides during printing process using `Not(Screen24.Printing)`
+- **Right-Aligned Controls**: Print button positioned at the end of the container
+- **Minimal Layout**: Clean, focused design for print output
+
+### Print-Specific Properties
+
+- **Screen Dimensions**: Fixed width/height for consistent print layout
+- **Print Detection**: Uses `Screen24.Printing` property to detect print state
+- **Print Function**: `Print()` function triggers the print dialog
+- **Button Visibility**: `Visible: =Not(Screen24.Printing)` hides UI during print
+
+### Layout Structure
+
+1. **Screen**: Fixed landscape dimensions (1123x794)
+2. **PrintContainer2**: Horizontal container for print controls
+3. **PrintButton2**: Secondary button that triggers printing
+
+### Print Behavior
+
+- **Before Print**: Button is visible and clickable
+- **During Print**: Button automatically hides (`Screen24.Printing` = true)
+- **After Print**: Button becomes visible again
+- **Print Output**: Only the content area prints, not the button
+
+### Use Cases
+
+- **Reports**: Landscape-oriented business reports
+- **Charts/Graphs**: Wide data visualizations that need landscape format
+- **Certificates**: Landscape certificates or awards
+- **Invoices**: Wide invoices with multiple columns
+- **Dashboards**: Print-friendly dashboard snapshots
+- **Forms**: Wide forms that benefit from landscape layout
+
+### Responsive Design
+
+- **Fixed Layout**: Maintains exact dimensions for consistent print output
+- **Print-Optimized**: Designed specifically for paper output, not screen viewing
+- **Button Positioning**: Right-aligned for easy access without interfering with content
+
+### Customization Options
+
+- **Paper Size**: Adjust Width/Height for different paper formats (A4, Letter, Legal)
+- **Content Area**: Add content containers below the print controls
+- **Print Settings**: Customize Print() function with specific parameters
+- **Button Styling**: Modify Appearance and positioning
+- **Multiple Buttons**: Add additional print options (PDF, different formats)
+
+### Print Integration
+
+```powerfx
+// Basic print function
+OnSelect: =Print()
+
+// Print with specific settings (if supported)
+OnSelect: =Print(Screen24)
+
+// Conditional printing based on data
+OnSelect: =If(IsBlank(DataSource), 
+    Notify("No data to print", NotificationType.Warning),
+    Print()
+)
+```
+
+### Best Practices
+
+- **Content Layout**: Design content to fit within printable area margins
+- **Font Sizes**: Use print-friendly font sizes (10pt minimum)
+- **Color Considerations**: Ensure content prints well in black and white
+- **Page Breaks**: Consider where natural page breaks should occur
+- **Print Preview**: Test print output before finalizing layout
