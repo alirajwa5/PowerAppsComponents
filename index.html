@@ -128,47 +128,59 @@
             primary: {
                 title: 'Primary Button',
                 preview: '<button class="btn btn-primary">Primary Button</button>',
-                code: `<span class="yaml-key">- PrimaryButton:</span>
-    <span class="yaml-key">Control:</span> <span class="yaml-string">Classic/Button@2.2.0</span>
-    <span class="yaml-key">Properties:</span>
-      <span class="yaml-key">BorderColor:</span> <span class="yaml-value">=ColorFade(Self.Fill, -15%)</span>
-      <span class="yaml-key">Color:</span> <span class="yaml-value">=RGBA(255, 255, 255, 1)</span>
-      <span class="yaml-key">DisabledBorderColor:</span> <span class="yaml-value">=RGBA(166, 166, 166, 1)</span>
-      <span class="yaml-key">Fill:</span> <span class="yaml-value">=RGBA(56, 96, 178, 1)</span>
-      <span class="yaml-key">Font:</span> <span class="yaml-value">=Font.'Open Sans'</span>
-      <span class="yaml-key">Height:</span> <span class="yaml-value">=41</span>
-      <span class="yaml-key">HoverBorderColor:</span> <span class="yaml-value">=ColorFade(Self.BorderColor, 20%)</span>
-      <span class="yaml-key">HoverColor:</span> <span class="yaml-value">=RGBA(255, 255, 255, 1)</span>
-      <span class="yaml-key">HoverFill:</span> <span class="yaml-value">=ColorFade(RGBA(56, 96, 178, 1), -20%)</span>
-      <span class="yaml-key">PressedBorderColor:</span> <span class="yaml-value">=Self.Fill</span>
-      <span class="yaml-key">PressedColor:</span> <span class="yaml-value">=Self.Fill</span>
-      <span class="yaml-key">PressedFill:</span> <span class="yaml-value">=Self.Color</span>
-      <span class="yaml-key">Text:</span> <span class="yaml-string">"Button Text"</span>
-      <span class="yaml-key">Width:</span> <span class="yaml-value">=200</span>`
+                code: `- PrimaryButton:
+    Control: Classic/Button@2.2.0
+    Properties:
+      BorderColor: =ColorFade(Self.Fill, -15%)
+      Color: =RGBA(255, 255, 255, 1)
+      DisabledBorderColor: =RGBA(166, 166, 166, 1)
+      Fill: =RGBA(56, 96, 178, 1)
+      Font: =Font.'Open Sans'
+      Height: =41
+      HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+      HoverColor: =RGBA(255, 255, 255, 1)
+      HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+      PressedBorderColor: =Self.Fill
+      PressedColor: =Self.Fill
+      PressedFill: =Self.Color
+      Text: "Button Text"
+      Width: =200`
             },
             secondary: {
                 title: 'Secondary Button',
                 preview: '<button class="btn btn-secondary">Secondary Button</button>',
-                code: `<span class="yaml-key">- SecondaryButton:</span>
-    <span class="yaml-key">Control:</span> <span class="yaml-string">Classic/Button@2.2.0</span>
-    <span class="yaml-key">Properties:</span>
-      <span class="yaml-key">BorderColor:</span> <span class="yaml-value">=RGBA(0, 0, 0, 0)</span>
-      <span class="yaml-key">BorderStyle:</span> <span class="yaml-value">=BorderStyle.None</span>
-      <span class="yaml-key">Color:</span> <span class="yaml-value">=RGBA(255, 255, 255, 1)</span>
-      <span class="yaml-key">Fill:</span> <span class="yaml-value">=RGBA(0, 120, 212, 1)</span>
-      <span class="yaml-key">Font:</span> <span class="yaml-value">=Font.'Segoe UI'</span>
-      <span class="yaml-key">HoverFill:</span> <span class="yaml-value">=RGBA(16, 110, 190, 1)</span>
-      <span class="yaml-key">Text:</span> <span class="yaml-string">"Button Text"</span>`
+                code: `- SecondaryButton:
+    Control: Classic/Button@2.2.0
+    Properties:
+      BorderColor: =RGBA(0, 0, 0, 0)
+      BorderStyle: =BorderStyle.None
+      Color: =RGBA(255, 255, 255, 1)
+      DisabledBorderColor: =RGBA(0, 0, 0, 0)
+      DisabledColor: =RGBA(161, 159, 157, 1)
+      DisabledFill: =RGBA(242, 242, 241, 0)
+      Fill: =RGBA(0, 120, 212, 1)
+      Font: =Font.'Segoe UI'
+      HoverBorderColor: =RGBA(0, 0, 0, 0)
+      HoverColor: =RGBA(255, 255, 255, 1)
+      HoverFill: =RGBA(16, 110, 190, 1)
+      PressedBorderColor: =RGBA(0, 69, 120, 1)
+      PressedColor: =RGBA(255, 255, 255, 1)
+      PressedFill: =RGBA(16, 110, 190, 1)
+      RadiusBottomLeft: =0
+      RadiusBottomRight: =0
+      RadiusTopLeft: =0
+      RadiusTopRight: =0
+      Text: "Button Text"`
             },
             modern: {
                 title: 'Modern Button',
                 preview: '<button class="btn btn-modern">Modern Button</button>',
-                code: `<span class="yaml-key">- ModernButton:</span>
-    <span class="yaml-key">Control:</span> <span class="yaml-string">Button@0.0.45</span>
-    <span class="yaml-key">Properties:</span>
-      <span class="yaml-key">AccessibleLabel:</span> <span class="yaml-string">"Button description"</span>
-      <span class="yaml-key">Text:</span> <span class="yaml-string">"Button Text"</span>
-      <span class="yaml-key">Width:</span> <span class="yaml-value">=140</span>`
+                code: `- ModernButton:
+    Control: Button@0.0.45
+    Properties:
+      AccessibleLabel: "Button description"
+      Text: "Button Text"
+      Width: =140`
             }
         };
 
@@ -208,6 +220,20 @@
                     btn.style.background = '';
                 }, 2000);
             });
+        }
+
+        function formatYamlCode(code) {
+            return code.replace(/^(\s*)([^:\s]+):/gm, '$1<span class="yaml-key">$2:</span>')
+                      .replace(/=([^"\n]+)/g, '<span class="yaml-value">=$1</span>')
+                      .replace(/"([^"]+)"/g, '<span class="yaml-string">"$1"</span>');
+        }
+
+        function toggleComponent(componentId) {
+            const component = components[componentId];
+            document.getElementById('modal-title').textContent = component.title;
+            document.getElementById('modal-preview').innerHTML = component.preview;
+            document.getElementById('modal-code').innerHTML = formatYamlCode(component.code);
+            document.getElementById('component-modal').classList.remove('hidden');
         }
 
         // Close modal when clicking outside
