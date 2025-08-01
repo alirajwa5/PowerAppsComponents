@@ -21,6 +21,7 @@
 - **powerapps-properties.md**: Colors, layout, spacing, fonts reference
 - **powerapps-patterns.md**: Reusable component code patterns
 - **button-components.md**: Button component definitions (Primary, Secondary, Modern)
+- **screen-examples.md**: Complete screen layouts (Login screen)
 
 ## Last Updated
 Created: Session with Ali discussing Power Apps + Shadcn setup

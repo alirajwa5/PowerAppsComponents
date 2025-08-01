@@ -53,6 +53,6 @@ When Ali says "push to github", execute these three commands in sequence:
    - Message should describe the task we achieved (short or long based on scope)
    - Consider what we were working on and issues we fixed
    - Examples: "Fixed endpoint not found issue and made response cleaner", "Added candidate shortlist API with validation"
-3. **Push to branches**: `pushmainanddev`
-   - This is Ali's PowerShell shortcut that pushes to development branches
+3. **Push to branches**: `pushmain`
+   - This is Ali's PowerShell shortcut that pushes to main branch
    - Just run the command, it will work automatically
