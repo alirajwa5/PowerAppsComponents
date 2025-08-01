@@ -22,6 +22,8 @@
 - **powerapps-patterns.md**: Reusable component code patterns
 - **button-components.md**: Button component definitions (Primary, Secondary, Modern)
 - **screen-examples.md**: Complete screen layouts (Login screen)
+- **powerapps-screen-structure.md**: Modern screen architecture patterns with GroupContainers and Table controls
+- **screen-templates.md**: Working screen templates (Split Screen, Sidebar Layout, Approval Request Form, Header and Footer, Header and Gallery, Header and Form View, Header and Table)
 
 ## Last Updated
 Created: Session with Ali discussing Power Apps + Shadcn setup
