@@ -4,141 +4,181 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PowerApps Component Library</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #001b6b 0%, #3860b2 100%);
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .container {
-            text-align: center;
-            max-width: 800px;
-            padding: 2rem;
-        }
-        
-        .logo {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            color: #ffffff;
-        }
-        
-        .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .description {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 3rem;
-            opacity: 0.8;
-        }
-        
-        .buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .btn-primary {
-            background: white;
-            color: #001b6b;
-        }
-        
-        .btn-primary:hover {
-            background: #f0f0f0;
-            transform: translateY(-2px);
-        }
-        
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-        
-        .btn-secondary:hover {
-            background: white;
-            color: #001b6b;
-            transform: translateY(-2px);
-        }
-        
-        .features {
-            margin-top: 4rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        
-        .feature {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .feature h3 {
-            margin-bottom: 0.5rem;
-            color: #ffffff;
-        }
-        
-        .feature p {
-            opacity: 0.8;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1 class="logo">PowerApps Component Library</h1>
-        <p class="subtitle">Shadcn UI Clone for Microsoft Power Apps</p>
-        <p class="description">
-            A comprehensive collection of beautiful, reusable components for Power Apps applications. 
-            Built with the same design principles as Shadcn UI, adapted specifically for the Power Apps platform.
-        </p>
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="nav-header">
+                <a href="/" class="logo">PowerApps UI</a>
+                <p class="tagline">Shadcn UI for Power Apps</p>
+            </div>
+            <div class="nav-section">
+                <h3>Getting Started</h3>
+                <ul>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#installation">Installation</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <h3>Components</h3>
+                <ul>
+                    <li><a href="#buttons">Buttons</a></li>
+                    <li><a href="#forms" class="disabled">Forms</a></li>
+                    <li><a href="#navigation" class="disabled">Navigation</a></li>
+                    <li><a href="#data-display" class="disabled">Data Display</a></li>
+                </ul>
+            </div>
+        </nav>
         
-        <div class="buttons">
-            <a href="#components" class="btn btn-primary">Browse Components</a>
-            <a href="https://github.com/alirajwa5/PowerAppsComponents" class="btn btn-secondary">View on GitHub</a>
-        </div>
-        
-        <div class="features">
-            <div class="feature">
-                <h3>🎨 Beautiful Design</h3>
-                <p>Clean, modern components following Shadcn UI design principles</p>
+        <main class="content">
+            <div class="page-header">
+                <h1>PowerApps Component Library</h1>
+                <p>Beautiful and accessible components for Power Apps. Copy, paste, and customize.</p>
             </div>
-            <div class="feature">
-                <h3>⚡ Power Apps Ready</h3>
-                <p>Native Power Apps YAML components, ready to copy and paste</p>
-            </div>
-            <div class="feature">
-                <h3>🔧 Customizable</h3>
-                <p>Easily adaptable components with consistent styling options</p>
-            </div>
-        </div>
+            
+            <section id="introduction" class="section">
+                <h2>Introduction</h2>
+                <p>A comprehensive collection of beautiful, reusable components for Power Apps applications. Built with the same design principles as Shadcn UI, adapted specifically for the Power Apps platform.</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>🎨 Beautiful Design</h3>
+                        <p>Clean, modern components following Shadcn UI design principles</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>⚡ Power Apps Ready</h3>
+                        <p>Native Power Apps YAML components, ready to copy and paste</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🔧 Customizable</h3>
+                        <p>Easily adaptable components with consistent styling options</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="buttons" class="section">
+                <h2>Buttons</h2>
+                <p>Displays a button or a component that looks like a button.</p>
+                
+                <div class="component-showcase">
+                    <div class="component-item">
+                        <div class="component-preview">
+                            <button class="btn btn-primary">Primary</button>
+                        </div>
+                        <div class="component-details">
+                            <h4>Primary Button</h4>
+                            <p>Main call-to-action button with gradient styling</p>
+                            <div class="component-actions">
+                                <button class="action-btn" onclick="showCode('primary-code')">View Code</button>
+                                <button class="action-btn" onclick="copyCode('primary-yaml')">Copy YAML</button>
+                            </div>
+                            <div id="primary-code" class="code-block hidden">
+                                <pre id="primary-yaml"><code>- PrimaryButton:
+    Control: Classic/Button@2.2.0
+    Properties:
+      BorderColor: =ColorFade(Self.Fill, -15%)
+      Color: =RGBA(255, 255, 255, 1)
+      DisabledBorderColor: =RGBA(166, 166, 166, 1)
+      Fill: =RGBA(56, 96, 178, 1)
+      Font: =Font.'Open Sans'
+      Height: =41
+      HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+      HoverColor: =RGBA(255, 255, 255, 1)
+      HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+      PressedBorderColor: =Self.Fill
+      PressedColor: =Self.Fill
+      PressedFill: =Self.Color
+      Text: ="Button Text"
+      Width: =200</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component-item">
+                        <div class="component-preview">
+                            <button class="btn btn-secondary">Secondary</button>
+                        </div>
+                        <div class="component-details">
+                            <h4>Secondary Button</h4>
+                            <p>Standard Power Apps styled button for secondary actions</p>
+                            <div class="component-actions">
+                                <button class="action-btn" onclick="showCode('secondary-code')">View Code</button>
+                                <button class="action-btn" onclick="copyCode('secondary-yaml')">Copy YAML</button>
+                            </div>
+                            <div id="secondary-code" class="code-block hidden">
+                                <pre id="secondary-yaml"><code>- SecondaryButton:
+    Control: Classic/Button@2.2.0
+    Properties:
+      BorderColor: =RGBA(0, 0, 0, 0)
+      BorderStyle: =BorderStyle.None
+      Color: =RGBA(255, 255, 255, 1)
+      DisabledBorderColor: =RGBA(0, 0, 0, 0)
+      DisabledColor: =RGBA(161, 159, 157, 1)
+      DisabledFill: =RGBA(242, 242, 241, 0)
+      Fill: =RGBA(0, 120, 212, 1)
+      Font: =Font.'Segoe UI'
+      HoverBorderColor: =RGBA(0, 0, 0, 0)
+      HoverColor: =RGBA(255, 255, 255, 1)
+      HoverFill: =RGBA(16, 110, 190, 1)
+      PressedBorderColor: =RGBA(0, 69, 120, 1)
+      PressedColor: =RGBA(255, 255, 255, 1)
+      PressedFill: =RGBA(16, 110, 190, 1)
+      RadiusBottomLeft: =0
+      RadiusBottomRight: =0
+      RadiusTopLeft: =0
+      RadiusTopRight: =0
+      Text: ="Button Text"</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component-item">
+                        <div class="component-preview">
+                            <button class="btn btn-modern">Modern</button>
+                        </div>
+                        <div class="component-details">
+                            <h4>Modern Button</h4>
+                            <p>Simplified modern button with minimal styling</p>
+                            <div class="component-actions">
+                                <button class="action-btn" onclick="showCode('modern-code')">View Code</button>
+                                <button class="action-btn" onclick="copyCode('modern-yaml')">Copy YAML</button>
+                            </div>
+                            <div id="modern-code" class="code-block hidden">
+                                <pre id="modern-yaml"><code>- ModernButton:
+    Control: Button@0.0.45
+    Properties:
+      AccessibleLabel: ="Button description"
+      Text: ="Button Text"
+      Width: =140</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
+    
+    <script>
+        function showCode(codeId) {
+            const codeBlock = document.getElementById(codeId);
+            codeBlock.classList.toggle('hidden');
+        }
+        
+        function copyCode(elementId) {
+            const code = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                // Show feedback
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.background = '#22c55e';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
