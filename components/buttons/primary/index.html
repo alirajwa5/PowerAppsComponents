@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primary Button - PowerApps Component Library</title>
+    <link rel="stylesheet" href="../../../styles.css">
+</head>
+<body>
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="nav-header">
+                <a href="../../../index.html" class="logo">PowerApps UI</a>
+            </div>
+            <div class="nav-section">
+                <h3>Components</h3>
+                <ul>
+                    <li><a href="../../buttons/">Buttons</a></li>
+                    <li><a href="../../forms/" class="disabled">Forms</a></li>
+                    <li><a href="../../navigation/" class="disabled">Navigation</a></li>
+                    <li><a href="../../data-display/" class="disabled">Data Display</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <main class="content">
+            <div class="page-header">
+                <h1>Primary Button</h1>
+                <p>The main call-to-action button with gradient styling and hover effects.</p>
+            </div>
+            
+            <div class="component-demo">
+                <div class="demo-preview">
+                    <button class="btn btn-primary">Primary Button</button>
+                </div>
+                
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab('preview')">Preview</button>
+                    <button class="tab" onclick="showTab('code')">Code</button>
+                </div>
+                
+                <div id="preview" class="tab-content active">
+                    <div class="component-preview" style="padding: 3rem; background: #18181b; border-radius: 0.5rem;">
+                        <button class="btn btn-primary">Primary Button</button>
+                    </div>
+                </div>
+                
+                <div id="code" class="tab-content">
+                    <div class="code-block">
+                        <pre><code>- PrimaryButton:
+    Control: Classic/Button@2.2.0
+    Properties:
+      BorderColor: =ColorFade(Self.Fill, -15%)
+      Color: =RGBA(255, 255, 255, 1)
+      DisabledBorderColor: =RGBA(166, 166, 166, 1)
+      Fill: =RGBA(56, 96, 178, 1)
+      Font: =Font.'Open Sans'
+      Height: =41
+      HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+      HoverColor: =RGBA(255, 255, 255, 1)
+      HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+      PressedBorderColor: =Self.Fill
+      PressedColor: =Self.Fill
+      PressedFill: =Self.Color
+      Text: ="Button Text"
+      Width: =200</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="component-details">
+                <h2>Usage</h2>
+                <p>Use the primary button for the main action in a form or dialog. There should typically be only one primary button per screen or section.</p>
+                
+                <h3>Properties</h3>
+                <ul>
+                    <li><strong>Fill:</strong> Primary blue gradient background</li>
+                    <li><strong>HoverFill:</strong> Darker shade on hover using ColorFade</li>
+                    <li><strong>Font:</strong> Open Sans for clean typography</li>
+                    <li><strong>Height:</strong> 41px for optimal touch targets</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
