@@ -60,10 +60,20 @@ When Ali says "create power app component" or similar:
 - **DON'T IMPROVISE** - Use only proven patterns from templates
 
 ### YAML Syntax Rules from Memory Bank:
-- Use `Weight: =FontWeight.Semibold` (not `='TextCanvas.Weight'.Semibold`)
+- **ALWAYS use pipe `|` syntax for complex formulas** (Text concatenation, multi-line logic)
+- Use `FontWeight: =FontWeight.Bold` (not `Weight: ='TextCanvas.Weight'.Semibold`)
+- **Remove problematic properties** like `Appearance` if they cause compact mapping errors
 - Use `OnSelect: |` with formula on next line for complex actions
-- Use `Appearance: ='ButtonCanvas.Appearance'.Secondary` for buttons
-- Avoid special characters in Text properties that break YAML parsing
+- **Check `.kiro/memory-bank/yaml-errors-solutions.md`** for common error fixes
+
+### Critical Error Prevention:
+- **Text concatenation MUST use pipe syntax:**
+  ```yaml
+  Text: |
+    ="Label: " & DataSource.Field
+  ```
+- **Never use compact mapping with dots/quotes**
+- **Always copy exact control versions from memory bank**
 
 ### Process:
 1. **Read memory bank** → Find similar template
