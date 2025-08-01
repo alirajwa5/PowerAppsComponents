@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerApps Component Library</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #001b6b 0%, #3860b2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #001b6b;
+        }
+        
+        .btn-primary:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            color: #001b6b;
+            transform: translateY(-2px);
+        }
+        
+        .features {
+            margin-top: 4rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature h3 {
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .feature p {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="logo">PowerApps Component Library</h1>
+        <p class="subtitle">Shadcn UI Clone for Microsoft Power Apps</p>
+        <p class="description">
+            A comprehensive collection of beautiful, reusable components for Power Apps applications. 
+            Built with the same design principles as Shadcn UI, adapted specifically for the Power Apps platform.
+        </p>
+        
+        <div class="buttons">
+            <a href="#components" class="btn btn-primary">Browse Components</a>
+            <a href="https://github.com/alirajwa5/PowerAppsComponents" class="btn btn-secondary">View on GitHub</a>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>🎨 Beautiful Design</h3>
+                <p>Clean, modern components following Shadcn UI design principles</p>
+            </div>
+            <div class="feature">
+                <h3>⚡ Power Apps Ready</h3>
+                <p>Native Power Apps YAML components, ready to copy and paste</p>
+            </div>
+            <div class="feature">
+                <h3>🔧 Customizable</h3>
+                <p>Easily adaptable components with consistent styling options</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
