@@ -158,3 +158,55 @@ Move the button outside the FormViewer as a sibling control:
 4. Never guess property syntax
 
 **New Protocol:** Memory Bank First - Always check documented patterns before writing any code.
+##
+ Proven Working Properties from Ali's Code
+
+### GroupContainer@1.3.0 Properties (CONFIRMED WORKING):
+```yaml
+- mainContainer:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      AlignInContainer: =AlignInContainer.SetByContainer
+      FillPortions: =0
+      Height: =Parent.Height
+      LayoutAlignItems: =LayoutAlignItems.Stretch
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+      Width: =Parent.Width
+```
+
+### Text@0.0.51 Properties (CONFIRMED WORKING):
+```yaml
+- TextControl:
+    Control: Text@0.0.51
+    Properties:
+      AlignInContainer: =AlignInContainer.Center
+      PaddingLeft: =5
+      PaddingTop: =8
+      Size: =16
+      Text: ="Sample Text"
+      Weight: ='TextCanvas.Weight'.Bold
+      Width: =150
+```
+
+### Button@0.0.45 Properties (CONFIRMED WORKING):
+```yaml
+- ButtonControl:
+    Control: Button@0.0.45
+    Properties:
+      AlignInContainer: =AlignInContainer.Center
+      Icon: ="ArrowLeft"
+      Layout: ='ButtonCanvas.Layout'.IconBeforeText
+      Text: ="Back"
+```
+
+### Header@0.0.44 Properties (CONFIRMED WORKING):
+```yaml
+- HeaderControl:
+    Control: Header@0.0.44
+    Properties:
+      Title: ="Header Title"
+```
+
+**RULE: Only use these confirmed properties. Do not assume or guess any other properties.**
