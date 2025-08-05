@@ -576,4 +576,131 @@ DataCard.Width: =Switch(
 ✅ **Vertical Tablet (Size 2)**: Wrapped layout, some items hidden
 ✅ **Mobile (Size 1)**: Stacked layout, popup menus, essential features only
 
-**Remember: LayoutWrap + Screen Size queries = Responsive Power Apps mastery!**
+**Remember: LayoutWrap + Screen Size queries = Responsive Power Apps mastery!**# New Co
+ntainer Properties & Responsive Insights
+
+## Scroll Properties (CONFIRMED WORKING)
+
+### LayoutOverflow Properties:
+```yaml
+- Container:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      LayoutOverflowX: =LayoutOverflow.Scroll  # Horizontal scroll
+      LayoutOverflowY: =LayoutOverflow.Scroll  # Vertical scroll
+```
+
+**Key Discovery:** Scroll properties work on some containers but not others - needs testing per container level.
+
+## Text Width Requirements
+
+### Critical Finding: Text Controls Need Width for Long Content
+```yaml
+- LongTextControl:
+    Control: Text@0.0.51
+    Properties:
+      Text: ="Long text content needs explicit width"
+      Width: =200  # REQUIRED for longer text content
+```
+
+**Rule:** The more text content, the more explicit width is needed for proper display.
+
+## Responsive Scroll Strategy
+
+### When LayoutWrap is Used:
+- **Problem**: Wrapped content may be cut off without scroll
+- **Solution**: Add scroll properties to parent containers
+- **Best Practice**: Test scroll on each container level
+
+### Container Hierarchy for Scroll:
+```yaml
+- OuterContainer:
+    Properties:
+      LayoutOverflowX: =LayoutOverflow.Scroll  # May work
+      LayoutOverflowY: =LayoutOverflow.Scroll
+    Children:
+      - InnerContainer:
+          Properties:
+            LayoutWrap: =true  # Content wraps
+            # Scroll may not work at this level
+```
+
+## Improved Responsive Pattern
+
+### Container-within-Container Strategy:
+1. **Outer Container**: Handles scroll and overall layout
+2. **Inner Container**: Handles wrapping and content organization
+3. **Content Containers**: Handle individual sections
+
+### Example Structure:
+```yaml
+- ScrollableContainer:
+    Properties:
+      LayoutOverflowX: =LayoutOverflow.Scroll
+      LayoutOverflowY: =LayoutOverflow.Scroll
+    Children:
+      - WrapContainer:
+          Properties:
+            LayoutWrap: =true
+            LayoutDirection: =LayoutDirection.Horizontal
+          Children:
+            - ContentSection1: {}
+            - ContentSection2: {}
+```
+
+## Text Width Guidelines
+
+### Width Requirements by Content Length:
+- **Short text** (< 20 chars): Width optional
+- **Medium text** (20-50 chars): Width: =150-200
+- **Long text** (> 50 chars): Width: =200-300
+- **Very long text**: Width: =300+ or use AutoHeight
+
+### Responsive Text Width:
+```yaml
+Width: =Switch(
+  Screen.Size,
+  1, 200,  # Mobile: smaller width
+  2, 250,  # Tablet: medium width
+  3, 300,  # Large: full width
+  4, 350
+)
+```
+
+## Scroll Troubleshooting
+
+### Why Scroll May Not Work:
+1. **Container Level**: Scroll works better on outer containers
+2. **Content Size**: Container must have defined height/width
+3. **Hierarchy**: Inner containers may not inherit scroll properly
+4. **LayoutWrap Conflict**: Wrap + Scroll may conflict at same level
+
+### Solutions:
+1. **Move scroll to parent container**
+2. **Use container-within-container pattern**
+3. **Set explicit dimensions on scrollable container**
+4. **Test scroll at different hierarchy levels**
+
+## Updated Responsive Best Practices
+
+### 1. Container Hierarchy:
+```
+ScrollContainer (with LayoutOverflow)
+└── WrapContainer (with LayoutWrap)
+    ├── Section1Container
+    ├── Section2Container
+    └── Section3Container
+```
+
+### 2. Text Width Strategy:
+- Always set Width for text with dynamic/long content
+- Use responsive width formulas for different screen sizes
+- Test text display across all breakpoints
+
+### 3. Scroll Implementation:
+- Add scroll to outermost containers first
+- Test scroll functionality at each level
+- Use both X and Y scroll for maximum flexibility
+
+**Key Insight:** Responsive design requires both wrapping AND scrolling - wrap for layout, scroll for overflow content!
