@@ -727,6 +727,59 @@ Office365Users.UserPhotoV2(ThisItem.Id)
 - **Empty State**: Customize messaging and icons
 - **Selection Limits**: Add validation for maximum selections
 - **Additional Fields**: Display more user properties (department, title, etc.)#
+
+## Responsive Header Utility (Back + Title/Subtitle + Badge)
+
+Reusable header block that adapts across breakpoints and guarantees mobile visibility.
+
+```yaml
+- UtilityResponsiveHeader:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      LayoutDirection: =LayoutDirection.Horizontal
+      LayoutWrap: =true
+      LayoutGap: =16
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+      PaddingTop: =8
+      PaddingBottom: =8
+      PaddingLeft: =8
+      PaddingRight: =8
+      Height: |
+        =If(
+          Screen.Size = 1,
+          Back.Height + TitleBlock.Height + Badge.Height + (Self.LayoutGap * 2) + Self.PaddingTop + Self.PaddingBottom,
+          Max(Back.Height, TitleBlock.Height, Badge.Height) + Self.PaddingTop + Self.PaddingBottom
+        )
+    Children:
+      - Back:
+          Control: Button@0.0.45
+          Properties:
+            Height: =32
+            Icon: ="ArrowLeft"
+            Layout: ='ButtonCanvas.Layout'.IconBeforeText
+            Text: ="Back"
+      - TitleBlock:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            FillPortions: =1
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutWrap: =false
+            LayoutGap: =2
+          Children:
+            - Title: { Control: Label@2.5.1, Properties: { AutoHeight: =true, FontWeight: =FontWeight.Bold, Size: =15, Text: ="[Title]" } }
+            - Subtitle: { Control: Label@2.5.1, Properties: { AutoHeight: =true, Text: ="[Subtitle]" } }
+      - Badge:
+          Control: Label@2.5.1
+          Properties:
+            Color: =RGBA(255, 0, 0, 1)
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            Text: ="[Status]"
+```
 # Meeting Template
 
 ### Overview

@@ -1547,6 +1547,43 @@ Screens:
 
 ### Alternative Uses
 
+## Responsive Header Quick Insert
+
+Add this header to any screen. Works across mobile/tablet/desktop.
+
+```yaml
+- HeaderQuickInsert:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      LayoutDirection: =LayoutDirection.Horizontal
+      LayoutWrap: =true
+      LayoutGap: =16
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+      PaddingTop: =8
+      PaddingBottom: =8
+      Height: |
+        =If(
+          Screen.Size = 1,
+          Back.Height + TitleBlock.Height + Status.Height + (Self.LayoutGap * 2) + Self.PaddingTop + Self.PaddingBottom,
+          Max(Back.Height, TitleBlock.Height, Status.Height) + Self.PaddingTop + Self.PaddingBottom
+        )
+    Children:
+      - Back: { Control: Button@0.0.45, Properties: { Height: =32, Icon: ="ArrowLeft", Text: ="Back" } }
+      - TitleBlock:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            FillPortions: =1
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutWrap: =false
+            LayoutGap: =2
+          Children:
+            - Title: { Control: Label@2.5.1, Properties: { AutoHeight: =true, FontWeight: =FontWeight.Bold, Text: ="Title" } }
+            - Subtitle: { Control: Label@2.5.1, Properties: { AutoHeight: =true, Text: ="Subtitle" } }
+      - Status: { Control: Label@2.5.1, Properties: { Text: ="status" } }
+```
 - **Mobile-First**: Perfect for mobile app layouts
 - **Simple Layouts**: When complex containers aren't needed
 - **Legacy Support**: Compatible with older Power Apps versions

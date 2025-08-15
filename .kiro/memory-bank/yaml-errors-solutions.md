@@ -147,6 +147,18 @@ Move the button outside the FormViewer as a sibling control:
 4. **Use simple property names (FontWeight vs Weight)**
 5. **Test YAML syntax before submitting**
 
+## Header-Specific Pitfalls
+
+1. Missing dynamic height on mobile headers leads to clipped controls. Use:
+```yaml
+Height: |
+  =If(Screen.Size = 1,
+    Back.Height + TitleBlock.Height + Badge.Height + (Self.LayoutGap * 2) + Self.PaddingTop + Self.PaddingBottom,
+    Max(Back.Height, TitleBlock.Height, Badge.Height) + Self.PaddingTop + Self.PaddingBottom)
+```
+2. Title block wrapping sideways: force vertical stack with `LayoutDirection=Vertical` and `LayoutWrap=false`.
+3. Hidden buttons/labels on mobile: add `LayoutMinWidth` formulas per child so wrap produces full-width rows on Size 1.
+
 ## Why These Errors Happened
 
 **Root Cause:** I was assuming syntax instead of checking memory bank patterns first.

@@ -129,3 +129,42 @@ Screens:
 - **Radius**: 8px for all containers
 - **Shadows**: Light shadows for subtle elevation
 - **Gaps**: 16px standard spacing between containers
+
+## Header Layout – Mobile/Tablet/Desktop
+
+Use a horizontal header container with wrapping and a vertical title block that always stacks subtitle under title. This prevents clipping on Size 1 and keeps one-row layout on Size 3–4.
+
+```yaml
+- HeaderResponsive:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      LayoutDirection: =LayoutDirection.Horizontal
+      LayoutWrap: =true
+      LayoutGap: =16
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+      PaddingTop: =8
+      PaddingBottom: =8
+      Height: |
+        =If(
+          Screen.Size = 1,
+          Back.Height + TitleBlock.Height + Badge.Height + (Self.LayoutGap * 2) + Self.PaddingTop + Self.PaddingBottom,
+          Max(Back.Height, TitleBlock.Height, Badge.Height) + Self.PaddingTop + Self.PaddingBottom
+        )
+    Children:
+      - Back: { Control: Button@0.0.45, Properties: { Height: =32, Icon: ="ArrowLeft", Text: ="Back" } }
+      - TitleBlock:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            FillPortions: =1
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutWrap: =false
+            LayoutGap: =2
+          Children:
+            - Title: { Control: Label@2.5.1, Properties: { AutoHeight: =true, FontWeight: =FontWeight.Bold, Text: ="Title" } }
+            - Subtitle: { Control: Label@2.5.1, Properties: { AutoHeight: =true, Text: ="Subtitle" } }
+      - Badge: { Control: Label@2.5.1, Properties: { Text: ="badge" } }
+```

@@ -28,7 +28,8 @@
 - **form-templates.md**: Form-based patterns (Header and Form View, Approval Request Form, Table and Form)
 - **utility-templates.md**: Utility patterns (Scrollable, Success, Tutorial, Email, People, Meeting)
 - **screen-templates.md**: Legacy combined templates file (deprecated - use specific files above)
+ - **examples/srcTrainingDashboard.yaml**: Full canvas YAML for responsive header reference
 
 ## Last Updated
 Created: Session with Ali discussing Power Apps + Shadcn setup
-Updated: Added Power Apps YAML structure patterns from working example
+Updated: Added responsive header pattern (3 breakpoints) and saved full canvas YAML for `srcTrainingDashboard` for future reference.

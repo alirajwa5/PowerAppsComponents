@@ -62,6 +62,26 @@ Properties:
   PaddingTop: =16
 ```
 
+## Responsive Header Pattern (Back + Title/Subtitle + Badge)
+```yaml
+Control: GroupContainer@1.3.0
+Variant: AutoLayout
+Properties:
+  LayoutDirection: =LayoutDirection.Horizontal
+  LayoutWrap: =true
+  LayoutGap: =16
+  LayoutAlignItems: =LayoutAlignItems.Center
+  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+  PaddingTop: =8
+  PaddingBottom: =8
+  Height: |
+    =If(
+      Screen.Size = 1,
+      Back.Height + TitleBlock.Height + Badge.Height + (Self.LayoutGap * 2) + Self.PaddingTop + Self.PaddingBottom,
+      Max(Back.Height, TitleBlock.Height, Badge.Height) + Self.PaddingTop + Self.PaddingBottom
+    )
+```
+
 ## Label Pattern
 ```yaml
 Control: Label@2.5.1

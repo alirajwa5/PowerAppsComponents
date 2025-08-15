@@ -14,6 +14,31 @@ A responsive gallery layout with header and card-based content display. Features
 ### Use Cases
 - Product catalogs, Content galleries, Dashboard cards, Portfolio displays, News feeds
 
+## Header + Body with Responsive Header (Reference)
+
+```yaml
+Screens:
+  ExampleHeaderBody:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+    Children:
+      - ScreenContainer:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Height: =Parent.Height
+            Width: =Parent.Width
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            PaddingTop: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+          Children:
+            - HeaderResponsive: { /* see containers-responsive.md Responsive Header Pattern */ }
+            - Main: { Control: GroupContainer@1.3.0, Variant: AutoLayout, Properties: { FillPortions: =1, LayoutDirection: =LayoutDirection.Vertical } }
+```
+
 ## Header and Table Template
 
 ### Overview

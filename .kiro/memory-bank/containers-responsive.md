@@ -704,3 +704,90 @@ ScrollContainer (with LayoutOverflow)
 - Use both X and Y scroll for maximum flexibility
 
 **Key Insight:** Responsive design requires both wrapping AND scrolling - wrap for layout, scroll for overflow content!
+
+## Responsive Header Pattern (3 breakpoints)
+
+Use this pattern to keep a header working on mobile (Size 1), tablet (Size 2-3) and desktop (Size 4): back button on the left, title block centered (Name over Subtitle), and a right-aligned badge/label. The header height is dynamic on mobile to prevent clipping when items wrap.
+
+### Rules
+- Layout: Horizontal, `LayoutWrap=true`, `LayoutJustifyContent=SpaceBetween`, small `LayoutGap`.
+- Title block: Vertical container, `LayoutWrap=false`, `LayoutAlignItems=Stretch`, always stacks Subtitle under Name (all sizes).
+- Min widths: Set `LayoutMinWidth` for each child using breakpoints to control wrapping.
+- Height: Sum of row heights on Size 1; otherwise max row height.
+
+### YAML Snippet
+```yaml
+- ResponsiveHeader:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      FillPortions: =0
+      LayoutDirection: =LayoutDirection.Horizontal
+      LayoutWrap: =true
+      LayoutGap: =16
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+      PaddingTop: =8
+      PaddingBottom: =8
+      PaddingLeft: =8
+      PaddingRight: =8
+      Height: |
+        =If(
+          Screen.Size = 1,
+          BackBtn.Height + TitleBlock.Height + RightBadge.Height + (Self.LayoutGap * 2) + Self.PaddingTop + Self.PaddingBottom,
+          Max(BackBtn.Height, TitleBlock.Height, RightBadge.Height) + Self.PaddingTop + Self.PaddingBottom
+        )
+    Children:
+      - BackBtn:
+          Control: Button@0.0.45
+          Properties:
+            Height: =32
+            Icon: ="ArrowLeft"
+            Layout: ='ButtonCanvas.Layout'.IconBeforeText
+            Text: ="Back"
+            LayoutMinWidth: |
+              =If(Screen.Size >= 3, 120, Screen.Size = 2, 140, Parent.Width - Parent.PaddingLeft - Parent.PaddingRight)
+      - TitleBlock:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            FillPortions: =1
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutWrap: =false
+            LayoutGap: =2
+            PaddingLeft: =10
+            Height: =If(Screen.Size <= 2, 80, 64)
+            LayoutMinWidth: |
+              =If(Screen.Size >= 3, 260, Screen.Size = 2, 300, Parent.Width - Parent.PaddingLeft - Parent.PaddingRight)
+          Children:
+            - Title:
+                Control: Label@2.5.1
+                Properties:
+                  AutoHeight: =true
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  Size: =15
+                  Text: ="[Name]"
+                  Width: =Parent.Width
+            - Subtitle:
+                Control: Label@2.5.1
+                Properties:
+                  AutoHeight: =true
+                  Font: =Font.'Open Sans'
+                  Text: ="[Subtitle]"
+                  Width: =Parent.Width
+      - RightBadge:
+          Control: Label@2.5.1
+          Properties:
+            Color: =RGBA(255, 0, 0, 1)
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            Text: ="[badge]"
+            LayoutMinWidth: |
+              =If(Screen.Size >= 3, 160, Screen.Size = 2, 180, Parent.Width - Parent.PaddingLeft - Parent.PaddingRight)
+```
+
+### When to use
+- Headers that must keep the back button and a status badge visible on mobile while stacking the title lines.
+- Works with Power Apps default breakpoints (Size 1..4). Replace `Screen` with the actual screen variable if needed.
